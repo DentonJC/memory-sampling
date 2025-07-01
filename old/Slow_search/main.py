@@ -250,7 +250,6 @@ def main(args):
             print("vector:", v)
             set_seed(iteration)
             
-            scenario = load_dataset(args, iteration)
             #trial_custom_probs = prob_vectors(scenario, args.vectors)
             model, optimizer, n_tasks = init_model(args)
     

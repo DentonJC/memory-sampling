@@ -194,33 +194,14 @@ def init_model(args):
 
 
 def prob_vectors(scenario, vectors, seed):
-    if seed == 0:
-        seed = 1337
-    print('Generating', str(vectors), 'vectors')
-    dls = []
-    N = 0
-    for e in scenario.train_stream:
-        dls += [e.dataset]
-        N += len(e.dataset)
-    
-    dl = DataLoader(ConcatDataset(dls), batch_size=1, shuffle=False)
-    
-    res = []
-    for v in range(vectors):
-        rng = np.random.default_rng(seed=v * vectors + seed)
-        #raw_w = rng.random(N); raw_w /= raw_w.sum()
-        raw_w = np.exp(rng.normal(loc=0.0, scale=0.5, size=N))
-        
-        # Build the hash→weight map
-        sample_weight_table = {}
-        for i, (x, y, _) in tqdm(enumerate(dl)):
-            h = fingerprint(x[0], y[0])           # unpack batch of 1
-            sample_weight_table[h] = float(raw_w[i])
-        res += [sample_weight_table]
-        #print(list(sample_weight_table)[0], sample_weight_table[list(sample_weight_table)[0]])
-    
-    with open("vectors.json", "w") as f:
-        json.dump(res, f)
+    # Define the path to the JSON file
+    file_path = '/home/ipipan/Desktop/BMVC/.guild/runs/88b9df741bc84b738a41e55646f4e873/vectors.json'
+
+    # Load the JSON file into a Python list of dictionaries
+    with open(file_path, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+
+    res = [data[6]]    
     return res
 
 
